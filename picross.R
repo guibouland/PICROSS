@@ -1,6 +1,19 @@
+
+
 ui <- fluidPage(
   
+  # Détection des clics
+  detect <- tags$head(
+    tags$script(HTML('
+      $(document).on("click", ".btn-square", function() {
+        $(this).toggleClass("clicked");
+      });
+    '))
+  ),
+  
+  
   titlePanel("Picross"),
+  
   
   
   # Sidebar
@@ -30,12 +43,15 @@ ui <- fluidPage(
       tags$br(),
       
       # menu DIFFICULTE
-      
+      selectInput(inputId ="diff",
+                  label = "Difficulty:",
+                  choices = c("Easy", "Medium", "Hard"),
+                  selected = "Easy"),
       
       # bouton VERIFICATION
       actionButton(
         inputId = "verif",
-        label = "Verification"
+        label = "Check"
       )
     ),
   
@@ -43,9 +59,16 @@ ui <- fluidPage(
     tabsetPanel(
       tabPanel("Game", 
                fluidRow(
-                 column(width = 6,
+                 column(width = 12,
                         tags$style(type="text/css", "#grid {border-collapse: separate; border-spacing: 10px;}"), # style pour délimiter les cellules
-                        tableOutput("grid")
+                        uiOutput("grid")
+                 ),
+                 tags$head(
+                   tags$style(HTML("
+                    .square-button {
+                      width: 50px;
+                      height: 50px;
+                    }"))
                  )
                )),
       tabPanel("Rules", 
@@ -58,19 +81,29 @@ ui <- fluidPage(
 
 
 
-server <- function (input, output, session) { 
-  output$grid <- renderTable({
-    matrix_data <- matrix(" ", nrow = input$diff + 1, ncol = input$diff + 1)
+
+server <- function(input, output, session) { 
+  output$grid <- renderUI({
+    matrix_data <- matrix(" ", nrow = input$size + 1, ncol = input$size + 1)
+    button_list <- list()  # Liste pour stocker les boutons
     
-    for (i in 2:input$diff + 1) {
-      for (j in 2:input$diff + 1) {
-        matrix_data[i, j] <- actionButton(inputId = paste0("button", i, j), label = " ")
+    for (i in 1:(input$size + 1)) {
+      button_row <- list()  # Liste pour stocker les boutons de chaque ligne
+      for (j in 1:(input$size + 1)) {
+        if (i > 1 && j > 1) {
+          button_row[[j]] <- actionButton(inputId = paste0("button", i, j), label = " ", width = "50px", height = "50px")
+        }
       }
+      button_list[[i]] <- div(style = "display: flex; flex-direction: row;", button_row)  # Ajout de la ligne de boutons à la liste principale
     }
-    matrix_data
-  },
-  sanitize.text.function = function(x) x)
+    
+    # Convertir la liste en tagList
+    tagList(button_list)
+  })
 }
+
+
+
 
 
 shinyApp(ui = ui, server = server)
