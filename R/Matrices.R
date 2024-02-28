@@ -21,7 +21,10 @@ matrice_alea <- function(n, p) {
 #' @examples compteur(matrix(c(0,0,1,1,1,1,0,1,1,1,0,1,1,0,0,0),nrow=4,ncol=4,byrow=TRUE),0)
 #' @export
 compteur <- function(M,t) {
-  if (t==1) {M <- t(M)}
+  sep = " "
+  if (t==1) {
+    M <- t(M)
+    sep= "\n"}
   n <- nrow(M)
   res <- list()
   for (i in 1:n) {
@@ -35,7 +38,7 @@ compteur <- function(M,t) {
         ligne_i <- append(ligne_i,compteur)
         compteur <- 0}
       }
-    res[[i]]<- ligne_i
+    res[[i]]<- paste(ligne_i, collapse = sep)
   }
   return(res)
 }
