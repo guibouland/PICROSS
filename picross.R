@@ -10,6 +10,14 @@ ui <- fluidPage(
       });
     '))
   ),
+  tags$head(
+    tags$style(HTML("
+                    .square-button {
+                      width: 40px;
+                      height: 40px;
+                      border-radius: 0;
+                    }"))
+  ),
   
   
   titlePanel("Picross"),
@@ -55,29 +63,23 @@ ui <- fluidPage(
       )
     ),
   
-  mainPanel(
-    tabsetPanel(
-      tabPanel("Game", 
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Game", 
                fluidRow(
                  column(width = 12,
                         tags$style(type="text/css", "#grid {border-collapse: separate; border-spacing: 10px;}"), # style pour délimiter les cellules
                         uiOutput("grid")
-                 ),
-                 tags$head(
-                   tags$style(HTML("
-                    .square-button {
-                      width: 50px;
-                      height: 50px;
-                    }"))
                  )
                )),
-      tabPanel("Rules", 
+        tabPanel("Rules", 
                tags$h1("Game rules"),
                tags$br(),
                "Game rules description")
-    ),
+      ),
+    )
   )
-))
+)
 
 
 
@@ -85,16 +87,17 @@ ui <- fluidPage(
 server <- function(input, output, session) { 
   output$grid <- renderUI({
     matrix_data <- matrix(" ", nrow = input$size + 1, ncol = input$size + 1)
+    
     button_list <- list()  # Liste pour stocker les boutons
     
     for (i in 1:(input$size + 1)) {
       button_row <- list()  # Liste pour stocker les boutons de chaque ligne
       for (j in 1:(input$size + 1)) {
         if (i > 1 && j > 1) {
-          button_row[[j]] <- actionButton(inputId = paste0("button", i, j), label = " ", width = "50px", height = "50px")
+          button_row[[j]] <- actionButton(inputId = paste0("button", i, j), label = " ", class = "square-button")
         }
       }
-      button_list[[i]] <- div(style = "display: flex; flex-direction: row;", button_row)  # Ajout de la ligne de boutons à la liste principale
+      button_list[[i]] <- div(style = "display: center; flex-direction: row;", button_row)  # Ajout de la ligne de boutons à la liste principale
     }
     
     # Convertir la liste en tagList
