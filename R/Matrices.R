@@ -21,24 +21,48 @@ matrice_alea <- function(n, p) {
 #' @examples compteur(matrix(c(0,0,1,1,1,1,0,1,1,1,0,1,1,0,0,0),nrow=4,ncol=4,byrow=TRUE),0)
 #' @export
 compteur <- function(M,t) {
-  sep = " "
   if (t==1) {
-    M <- t(M)
-    sep= "\n"}
-  n <- nrow(M)
-  res <- list()
-  for (i in 1:n) {
+    M <- t(M)}
+  nb_lignes <- nrow(M)
+  nb_col <- ceiling(nb_lignes/2)
+  res <- matrix(rep(" ",(nb_lignes*nb_col)), nrow = nb_lignes, ncol = nb_col)
+  for (i in 1:nb_lignes) {
     ligne_i <- c()
-    compteur <- 0
-    for (j in 1:n) {
+    r <- 0
+    for (j in 1:nb_lignes) {
       if (M[i,j]==1) {
-        compteur <- compteur + 1
+        r <- r + 1
       }
-      if ((M[i,j]==0 & compteur!=0) | (M[i,j]==1 & j==n) ) {
-        ligne_i <- append(ligne_i,compteur)
-        compteur <- 0}
-      }
-    res[[i]]<- paste(ligne_i, collapse = sep)
+      if ((M[i,j]==0 & r!=0) | (M[i,j]==1 & j==nb_lignes) ) {
+        ligne_i <- append(ligne_i,r)
+        r <- 0}
+    }
+    res[i,((nb_col-length(ligne_i)+1):nb_col)]<-ligne_i
   }
   return(res)
 }
+
+# compteur <- function(M,t) {
+#   sep = " "
+#   if (t==1) {
+#     M <- t(M)
+#     sep= "\n"}
+#   n <- nrow(M)
+#   res <- list()
+#   for (i in 1:n) {
+#     ligne_i <- c()
+#     compteur <- 0
+#     for (j in 1:n) {
+#       if (M[i,j]==1) {
+#         compteur <- compteur + 1
+#       }
+#       if ((M[i,j]==0 & compteur!=0) | (M[i,j]==1 & j==n) ) {
+#         ligne_i <- append(ligne_i,compteur)
+#         compteur <- 0}
+#     }
+#     res[[i]]<- paste(ligne_i, collapse = sep)
+#   }
+#   return(res)
+# }
+
+
