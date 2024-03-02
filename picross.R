@@ -1,4 +1,4 @@
-
+library(shiny)
 
 ui <- fluidPage(
   
@@ -16,6 +16,11 @@ ui <- fluidPage(
                       width: 40px;
                       height: 40px;
                       border-radius: 0;
+                      margin-bottom: 3px;
+                      border-radius: 10px;
+                    }
+                    .custom-matrix {
+                      margin-bottom: 3px;
                     }"))
   ),
   
@@ -68,7 +73,8 @@ ui <- fluidPage(
         tabPanel("Game", 
                fluidRow(
                  column(width = 12,
-                        tags$style(type="text/css", "#grid {border-collapse: separate; border-spacing: 10px;}"), # style pour délimiter les cellules
+                        tags$style(type="text/css", ".btn-group { margin-bottom: 2px; }"),
+                        tags$style(type="text/css", "#grid {border-collapse: separate; border-spacing: 2px;}"), # style pour délimiter les cellules
                         uiOutput("grid")
                  )
                )),
@@ -81,29 +87,50 @@ ui <- fluidPage(
   )
 )
 
+#server <- function(input, output, session) { 
+#  output$grid <- renderUI({
+#    matrix_data <- matrix(" ", nrow = input$size + 1, ncol = input$size + 1)
+#    
+#    button_list <- list()  # Liste pour stocker les boutons
+#    
+#    for (i in 1:(input$size + 1)) {
+#      button_row <- list()  # Liste pour stocker les boutons de chaque ligne
+#      for (j in 1:(input$size + 1)) {
+#        if (i > 1 && j > 1) {
+#          button_row[[j]] <- actionButton(inputId = paste0("button", i, j), label = " ", class = "square-button")
+#        }
+#      }
+#      button_list[[i]] <- div(style = "display: center; flex-direction: row;", button_row)  # Ajout de la ligne de boutons à la liste principale
+#    }
+#    
+#    # Convertir la liste en tagList
+#    tagList(button_list)
+#  })
+#}
 
 
-
-server <- function(input, output, session) { 
+server <- function(input, output) {
   output$grid <- renderUI({
-    matrix_data <- matrix(" ", nrow = input$size + 1, ncol = input$size + 1)
+    grid <- matrix(0, nrow = input$size+1,ncol = input$size + 1, byrow = TRUE)
     
-    button_list <- list()  # Liste pour stocker les boutons
-    
-    for (i in 1:(input$size + 1)) {
-      button_row <- list()  # Liste pour stocker les boutons de chaque ligne
-      for (j in 1:(input$size + 1)) {
+    grid_buttons <- lapply(1:(input$size+1), function(i) {
+      buttons <- lapply(1:(input$size+1), function(j) {
         if (i > 1 && j > 1) {
-          button_row[[j]] <- actionButton(inputId = paste0("button", i, j), label = " ", class = "square-button")
+          actionButton(inputId = paste0("button", i, j), label = "", class="square-button")
         }
-      }
-      button_list[[i]] <- div(style = "display: center; flex-direction: row;", button_row)  # Ajout de la ligne de boutons à la liste principale
-    }
-    
-    # Convertir la liste en tagList
-    tagList(button_list)
+        else {
+          paste("a b")
+        }
+      })
+      fluidRow(do.call(tagList, buttons))
+    })
+    print(grid_buttons)
+    print(grid)
+    do.call(tagList, grid_buttons)
   })
 }
+
+
 
 
 
