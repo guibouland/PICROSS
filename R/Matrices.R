@@ -42,27 +42,6 @@ compteur <- function(M,t) {
   return(res)
 }
 
-# compteur <- function(M,t) {
-#   sep = " "
-#   if (t==1) {
-#     M <- t(M)
-#     sep= "\n"}
-#   n <- nrow(M)
-#   res <- list()
-#   for (i in 1:n) {
-#     ligne_i <- c()
-#     compteur <- 0
-#     for (j in 1:n) {
-#       if (M[i,j]==1) {
-#         compteur <- compteur + 1
-#       }
-#       if ((M[i,j]==0 & compteur!=0) | (M[i,j]==1 & j==n) ) {
-#         ligne_i <- append(ligne_i,compteur)
-#         compteur <- 0}
-#     }
-#     res[[i]]<- paste(ligne_i, collapse = sep)
-#   }
-#   return(res)
-# }
+
 
 

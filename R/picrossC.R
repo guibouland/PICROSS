@@ -1,6 +1,4 @@
 library(shiny)
-source("Matrices.R", local=FALSE)
-source("Diff.R", local=FALSE)
 
 ui <- fluidPage(
   
@@ -99,6 +97,7 @@ server <- function(input, output) {
     })
     print(grid_buttons)
     print(grid)
+    print(p)
     print(p)
     print(matrice)
     tagList(
