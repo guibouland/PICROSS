@@ -3,7 +3,7 @@ library(shiny)
 ui <- fluidPage(
   
   titlePanel("Picross"),
-  
+
   # Sidebar
   sidebarLayout(
     sidebarPanel(
@@ -93,7 +93,7 @@ server <- function(input, output) {
           div(style = paste0("width: ", button_size, "px; text-align: center;"), " ")
         }
       })
-      div(style = "display: flex; justify-content: flex-start;", do.call(tagList, buttons))
+      div(style = "display: flex; justify-content: flex-start; align-items: center;", do.call(tagList, buttons))
     })
     print(grid_buttons)
     print(grid)

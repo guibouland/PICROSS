@@ -18,16 +18,18 @@ ui <- fluidPage(
       # Bouton RESET
       actionButton(
         inputId = "reset",
-        label = "Reset"),
+        label = "Reset",
+        style = "material-flat"
+        ),
       tags$br(),
-      tags$br(),
-      
+
       # slider TAILLE
       sliderInput(
         inputId = "size",
         label = "Size:",
         min = 5, max = 15,
-        value = 5, step = 1),
+        value = 5, step = 1
+        ),
       tags$br(),
       
       # menu DIFFICULTE
@@ -64,12 +66,48 @@ ui <- fluidPage(
 
 
 
+#server <- function(input, output) {
+#  output$grid <- renderUI({
+#    coeff <- ceiling((input$size)/2)
+#    grid <- matrix(0, nrow = input$size+coeff, ncol = input$size + coeff, byrow = TRUE)
+#    
+#    button_size <- min(40, 800 / (2*input$size))  # Adjust button size based on grid size
+#    
+#    # Generate CSS for square-button class
+#    button_css <- paste0(".square-button { width: ", button_size, "px; height: ", button_size, "px; }")
+#    
+#    grid_buttons <- lapply(1:(input$size+coeff), function(i) {
+#      buttons <- lapply(1:(input$size+coeff), function(j) {
+#        if (i > coeff && j > coeff) {
+#          div(actionButton(inputId = paste0("button", i, j), label = "", class="square-button"))
+#        }
+#        else if (j>coeff && i<=coeff) {
+#          div(style = paste0("width: ", button_size, "px; text-align: center;"), "a")
+#        }
+#        else if (i>coeff && j<=coeff) {
+#          div(style = paste0("width: ", button_size, "px; text-align: center;"), "b")
+#        }
+#        else {
+#          div(style = paste0("width: ", button_size, "px; text-align: center;"), " ")
+#        }
+#      })
+#      div(style = "display: flex; justify-content: flex-start;", do.call(tagList, buttons))
+#    })
+#    print(grid_buttons)
+#    print(grid)
+#    tagList(
+#      tags$style(button_css),  # Inject CSS into the app
+#      div(style = "width: 800px; height: 800px;", do.call(tagList, grid_buttons))  # Fixed-size div for the grid
+#    )
+#  })
+#}
+
 server <- function(input, output) {
   output$grid <- renderUI({
     coeff <- ceiling((input$size)/2)
     grid <- matrix(0, nrow = input$size+coeff, ncol = input$size + coeff, byrow = TRUE)
     
-    button_size <- min(40, 800 / (2*input$size))  # Adjust button size based on grid size
+    button_size <- min(40, 800 / input$size)  # Adjust button size based on grid size
     
     # Generate CSS for square-button class
     button_css <- paste0(".square-button { width: ", button_size, "px; height: ", button_size, "px; }")
@@ -89,7 +127,7 @@ server <- function(input, output) {
           div(style = paste0("width: ", button_size, "px; text-align: center;"), " ")
         }
       })
-      div(style = "display: flex; justify-content: flex-start;", do.call(tagList, buttons))
+      div(style = "display: flex; justify-content: flex-start; align-items: center;", do.call(tagList, buttons))  # Add align-items: center;
     })
     print(grid_buttons)
     print(grid)
@@ -99,5 +137,8 @@ server <- function(input, output) {
     )
   })
 }
+
+shinyApp(ui = ui, server = server)
+
 
 shinyApp(ui = ui, server = server)
