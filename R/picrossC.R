@@ -71,28 +71,32 @@ server <- function(input, output) {
   # Proportion de cases noires
   observeEvent({
     input$new
-    input$size},{
+    input$size
+    input$diff},{
     v$p <- difficulte(input$diff)
     })
 
   # Génération de la matrice
   observeEvent({
     input$new
-    input$size},{
+    input$size
+    input$diff},{
     v$matrice <- matrice_alea(input$size, v$p)
     })
   
   # Indices par lignes
   observeEvent({
     input$new
-    input$size},{
+    input$size
+    input$diff},{
     v$indices_lignes <- compteur(v$matrice,0)
     })
   
   # Indices par colonnes
   observeEvent({
     input$new
-    input$size},{
+    input$size
+    input$diff},{
     v$indices_col <- t(compteur(v$matrice,1))
     })
   
