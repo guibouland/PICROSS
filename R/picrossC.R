@@ -65,16 +65,36 @@ ui <- fluidPage(
 
 
 server <- function(input, output) {
-  v <- reactiveValues(p=NULL, matrice=NULL, indices_lignes=NULL, undices_col=NULL)
   
+  v <- reactiveValues(p=NULL, matrice=NULL, indices_lignes=NULL, indices_col=NULL)
+  
+  # Proportion de cases noires
   observeEvent({
     input$new
-    input$size},{    
+    input$size},{
     v$p <- difficulte(input$diff)
+    })
+
+  # Génération de la matrice
+  observeEvent({
+    input$new
+    input$size},{
     v$matrice <- matrice_alea(input$size, v$p)
-    v$indices_lignes <- compteur(v$matrice,0)
-    v$indices_col <- t(compteur(v$matrice,1))
+    })
   
+  # Indices par lignes
+  observeEvent({
+    input$new
+    input$size},{
+    v$indices_lignes <- compteur(v$matrice,0)
+    })
+  
+  # Indices par colonnes
+  observeEvent({
+    input$new
+    input$size},{
+    v$indices_col <- t(compteur(v$matrice,1))
+    })
   
   output$grid <- renderUI({
     coeff <- ceiling((input$size)/2)
@@ -105,12 +125,11 @@ server <- function(input, output) {
     # print(grid_buttons)
     # print(grid)
     # print(p)
-    print(v$matrice)
+    # print(matrice)
     tagList(
       tags$style(button_css),  # Inject CSS into the app
       div(style = "width: 800px; height: 800px;", do.call(tagList, grid_buttons))  # Fixed-size div for the grid
     )
-  })
   })
 }
 
