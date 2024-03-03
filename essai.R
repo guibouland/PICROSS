@@ -126,28 +126,9 @@ ui <- fluidPage(
   )
 )
 
-#server <- function(input, output, session) { 
-#  output$grid <- renderUI({
-#    matrix_data <- matrix(" ", nrow = input$size + 1, ncol = input$size + 1)
-#    
-#    button_list <- list()  # Liste pour stocker les boutons
-#    
-#    for (i in 1:(input$size + 1)) {
-#      button_row <- list()  # Liste pour stocker les boutons de chaque ligne
-#      for (j in 1:(input$size + 1)) {
-#        if (i > 1 && j > 1) {
-#          button_row[[j]] <- actionButton(inputId = paste0("button", i, j), label = " ", class = "square-button")
-#        }
-#      }
-#      button_list[[i]] <- div(style = "display: center; flex-direction: row;", button_row)  # Ajout de la ligne de boutons à la liste principale
-#    }
-#    
-#    # Convertir la liste en tagList
-#    tagList(button_list)
-#  })
-#}
 
-#
+
+
 #server <- function(input, output) {
 #  output$grid <- renderUI({
 #    coeff <- ceiling((input$size)/2)
@@ -156,19 +137,19 @@ ui <- fluidPage(
 #    grid_buttons <- lapply(1:(input$size+coeff), function(i) {
 #      buttons <- lapply(1:(input$size+coeff), function(j) {
 #        if (i > coeff && j > coeff) {
-#          actionButton(inputId = paste0("button", i, j), label = "", class="square-button")
+#          div(actionButton(inputId = paste0("button", i, j), label = "", class="square-button"))
 #        }
 #        else if (j>coeff && i<=coeff) {
-#          div(style = "text-align: center;", "a")  # Ajout de la div pour centrer le texte
+#          div(style = "width: 40px; margin-right: 3px; text-align: center;", "a")
 #        }
 #        else if (i>coeff && j<=coeff) {
-#          paste("b")
+#          div(style = "text-align: right; margin-right: 30px;", "b")
 #        }
 #        else {
-#          paste("v")
+#          div(style = "text-align: right; margin-right: 35px;", "")
 #        }
 #      })
-#      fluidRow(do.call(tagList, buttons))
+#      div(style = "display: flex; justify-content: flex-start;", do.call(tagList, buttons))
 #    })
 #    print(grid_buttons)
 #    print(grid)
@@ -183,29 +164,29 @@ server <- function(input, output) {
     coeff <- ceiling((input$size)/2)
     grid <- matrix(0, nrow = input$size+coeff,ncol = input$size + coeff, byrow = TRUE)
     
+    button_size <- min(40, 800 / input$size)  # Ajuster la taille des boutons en fonction de la taille de la grille
+    
     grid_buttons <- lapply(1:(input$size+coeff), function(i) {
       buttons <- lapply(1:(input$size+coeff), function(j) {
         if (i > coeff && j > coeff) {
-          div(actionButton(inputId = paste0("button", i, j), label = "", class="square-button"))
+          div(actionButton(inputId = paste0("button", i, j), label = "", class="square-button"), style = paste0("width: ", button_size, "px; height: ", button_size, "px;"))
         }
         else if (j>coeff && i<=coeff) {
-          div(style = "text-align: center; margin-right: 30px;", "a")
+          div(style = paste0("width: ", button_size, "px; height: ", button_size, "px; text-align: center;"), "a")
         }
         else if (i>coeff && j<=coeff) {
-          div(style = "text-align: center; margin-right: 30px;", "b")
+          div(style = paste0("width: ", button_size, "px; height: ", button_size, "px; text-align: center;"), "b")
         }
         else {
-          div(style = "text-align: center; margin-right: 30px;", "v")
+          div(style = paste0("width: ", button_size, "px; height: ", button_size, "px; text-align: center;"), " ")
         }
       })
-      div(style = "display: flex; justify-content: center;", do.call(tagList, buttons))
+      div(style = "display: flex; justify-content: flex-start;", do.call(tagList, buttons))
     })
     print(grid_buttons)
     print(grid)
-    do.call(tagList, grid_buttons)
+    div(style = "width: 800px; height: 800px;", do.call(tagList, grid_buttons))  # Div de taille fixe pour la grille
   })
 }
 
-
 shinyApp(ui = ui, server = server)
-
