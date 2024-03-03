@@ -65,11 +65,18 @@ ui <- fluidPage(
 
 
 server <- function(input, output) {
+  v <- reactiveValues(p=NULL, matrice=NULL, indices_lignes=NULL, undices_col=NULL)
+  
+  observeEvent({
+    input$new
+    input$size},{    
+    v$p <- difficulte(input$diff)
+    v$matrice <- matrice_alea(input$size, v$p)
+    v$indices_lignes <- compteur(v$matrice,0)
+    v$indices_col <- t(compteur(v$matrice,1))
+  
+  
   output$grid <- renderUI({
-    p <- difficulte(input$diff)
-    matrice <- matrice_alea(input$size, p)
-    indices_lignes <- compteur(matrice,0)
-    indices_col <- t(compteur(matrice,1))
     coeff <- ceiling((input$size)/2)
     grid <- matrix(0, nrow = input$size+coeff, ncol = input$size + coeff, byrow = TRUE)
     
@@ -84,10 +91,10 @@ server <- function(input, output) {
           div(actionButton(inputId = paste0("button", i, j), label = "", class="square-button"))
         }
         else if (j>coeff && i<=coeff) {
-          div(style = paste0("width: ", button_size, "px; text-align: center;"), indices_col[i,j-coeff])
+          div(style = paste0("width: ", button_size, "px; text-align: center;"), v$indices_col[i,j-coeff])
         }
         else if (i>coeff && j<=coeff) {
-          div(style = paste0("width: ", button_size, "px; text-align: center;"), indices_lignes[i-coeff,j])
+          div(style = paste0("width: ", button_size, "px; text-align: center;"), v$indices_lignes[i-coeff,j])
         }
         else {
           div(style = paste0("width: ", button_size, "px; text-align: center;"), " ")
@@ -95,15 +102,15 @@ server <- function(input, output) {
       })
       div(style = "display: flex; justify-content: flex-start;", do.call(tagList, buttons))
     })
-    print(grid_buttons)
-    print(grid)
-    print(p)
-    print(p)
-    print(matrice)
+    # print(grid_buttons)
+    # print(grid)
+    # print(p)
+    print(v$matrice)
     tagList(
       tags$style(button_css),  # Inject CSS into the app
       div(style = "width: 800px; height: 800px;", do.call(tagList, grid_buttons))  # Fixed-size div for the grid
     )
+  })
   })
 }
 
