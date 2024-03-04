@@ -2,9 +2,20 @@ library(shiny)
 library(shinyjs)
 
 ui <- fluidPage(
-  
+  # tags$head(tags$script(src = "message-handler.js")),
   titlePanel("Picross"),
-  
+  tags$head(
+    tags$style(
+      HTML(".shiny-notification {
+             position:fixed;
+             top: calc(30%);
+             left: calc(50%);
+             width: 150
+             }
+             "
+      )
+    )
+  ),
   
   sidebarLayout(
     # SIDEBAR
@@ -53,7 +64,8 @@ ui <- fluidPage(
                    column(width = 12,
                           tags$style(type="text/css", ".btn-group { margin-bottom: 2px; }"),
                           tags$style(type="text/css", "#grid {border-collapse: separate; border-spacing: 2px;}"), # style pour délimiter les cellules
-                          uiOutput("grid")
+                          uiOutput("grid"),
+                          textOutput('message')
                    )
                  )),
         tabPanel("Rules", 
@@ -70,7 +82,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  v <- reactiveValues(p=NULL, matrice=NULL, indices_lignes=NULL, indices_col=NULL, statuses=NULL)
+  v <- reactiveValues(p=NULL, matrice=NULL, indices_lignes=NULL, indices_col=NULL, statuses=NULL, resultat=NULL)
   
   # Proportion de cases noires
   observeEvent({
@@ -80,7 +92,7 @@ server <- function(input, output, session) {
       v$p <- difficulte(input$diff)
     })
   
-  # Génération de la matrice
+  # Génération des matrices solution et réponse
   observeEvent({
     input$new
     input$size
@@ -105,6 +117,7 @@ server <- function(input, output, session) {
       v$indices_col <- t(compteur(v$matrice,1))
     })
   
+  # Construction de la grille
   output$grid <- renderUI({
     
     # On calcule le nombre maximal d'indices sur les côtés de la grille
@@ -178,29 +191,41 @@ server <- function(input, output, session) {
     )
   })
   
+
   observeEvent(input$status_changed, {
     # On calcule le nombre maximal d'indices sur les côtés de la grille
     coeff <- ceiling((input$size)/2)
-    
+
     # On extrait les indices des id des boutons
     row_index <- input$status_changed$row - coeff
-    
+
     col_index <- input$status_changed$col - coeff
-    
+
     print(c(row_index, col_index))
     print(coeff)
-    
+
     # Check if row and column indices are within bounds of action button grid
     if (!is.na(row_index) && !is.na(col_index) &&
         row_index >= 1 && row_index < (input$size+coeff) &&
         col_index >= 1 && col_index < (input$size+coeff)) {
       v$statuses[row_index, col_index] <- input$status_changed$status
-      print(v$statuses)
     } else {
       print("Index out of bounds or invalid")
     }
+    
+    print(v$statuses)
+    print(v$matrice)
+    # v$resultat <- (v$statuses == v$matrice)
   })
-}
 
+# Paramètrage de l'effet du bouton Check
+observeEvent(input$verif,{
+             res <- (replace(v$statuses, v$statuses==2, 0) == v$matrice)
+             print(prod(res))
+             if (prod(res)==0) {
+               showNotification("Looser !!!", duration = 10, type="error")}
+             else {showNotification("Bravo !!!", duration = 10, type="message")}
+             })
+}
 
 shinyApp(ui = ui, server = server)
