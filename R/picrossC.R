@@ -14,7 +14,12 @@ ui <- fluidPage(
              }
              "
       )
-    )
+    ),
+    tags$script("
+      Shiny.addCustomMessageHandler('jsCode', function(message) {
+        eval(message);
+      });
+    ")
   ),
   
   sidebarLayout(
@@ -191,19 +196,19 @@ server <- function(input, output, session) {
     )
   })
   
-
+  
   observeEvent(input$status_changed, {
     # On calcule le nombre maximal d'indices sur les côtés de la grille
     coeff <- ceiling((input$size)/2)
-
+    
     # On extrait les indices des id des boutons
     row_index <- input$status_changed$row - coeff
-
+    
     col_index <- input$status_changed$col - coeff
-
+    
     print(c(row_index, col_index))
     print(coeff)
-
+    
     # Check if row and column indices are within bounds of action button grid
     if (!is.na(row_index) && !is.na(col_index) &&
         row_index >= 1 && row_index < (input$size+coeff) &&
@@ -217,15 +222,31 @@ server <- function(input, output, session) {
     print(v$matrice)
     # v$resultat <- (v$statuses == v$matrice)
   })
-
-# Paramètrage de l'effet du bouton Check
-observeEvent(input$verif,{
-             res <- (replace(v$statuses, v$statuses==2, 0) == v$matrice)
-             print(prod(res))
-             if (prod(res)==0) {
-               showNotification("Looser !!!", duration = 10, type="error")}
-             else {showNotification("Bravo !!!", duration = 10, type="message")}
-             })
+  
+  # Paramètrage de l'effet du bouton Check
+  observeEvent(input$verif,{
+    res <- (replace(v$statuses, v$statuses==2, 0) == v$matrice)
+    print(prod(res))
+    if (prod(res)==0) {
+      showNotification("Looser !!!", duration = 10, type="error")}
+    else {showNotification("Bravo !!!", duration = 10, type="message")}
+  })
+  
+  # Observer for the "reset" button
+  observeEvent(input$reset, {
+    # Reset the statuses matrix
+    v$statuses <- matrix(0, nrow = input$size, ncol = input$size)
+    
+    # JavaScript to reset the colors of the grid
+    js_reset <- "
+    $('.square-button').each(function() {
+      $(this).css('background-color', 'white');
+      $(this).html('');
+      $(this).data('status', 0);
+    });
+  "
+    session$sendCustomMessage(type = 'jsCode', message = js_reset)
+  })
 }
 
 shinyApp(ui = ui, server = server)
