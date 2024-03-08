@@ -145,10 +145,12 @@ server <- function(input, output, session) {
                            "data-status"="0"))  
         }
         else if (j>coeff && i<=coeff) {
+          # Alignement des indices colonnes
           div(style = paste0("width: ", button_size, "px; text-align: center;"), 
               v$indices_col[i,j-coeff])
         }
         else if (i>coeff && j<=coeff) {
+          # Alignement des indices lignes
           div(style = paste0("width: ", button_size, "px; text-align: center;"), 
               v$indices_lignes[i-coeff,j])
         }
@@ -159,16 +161,16 @@ server <- function(input, output, session) {
       div(style = "display: flex; justify-content: flex-start; align-items: center;", do.call(tagList, buttons))
     })
     
-    # Add custom JavaScript to change button color and update status matrix
+    # JavaScript pour changer les couleurs des boutons et les statuts quand on les clique
     js <- "
       $('.square-button').click(function() {
         var status = parseInt($(this).data('status'));
   
-        // Extract the row and column from the button_id
+        // On extrait les lignes et les colonnes des id des boutons
         var id = $(this).attr('id'); 
-        var indices = id.split('_'); // Split the id on the underscore character
-        var row = parseInt(indices[1]); // The row is the second element of the array
-        var col = parseInt(indices[2]); // The column is the third element of the array
+        var indices = id.split('_'); // On coupe au _
+        var row = parseInt(indices[1]); // La ligne est le second élément des trois
+        var col = parseInt(indices[2]); // La colonne est le dernier
         if (status === 0) {
           $(this).css('background-color', 'black');
           $(this).data('status', 1);
@@ -209,7 +211,7 @@ server <- function(input, output, session) {
     print(c(row_index, col_index))
     print(coeff)
     
-    # Check if row and column indices are within bounds of action button grid
+    # On vérifie si les indices sont dans l'ensemble de la matrice de jeu
     if (!is.na(row_index) && !is.na(col_index) &&
         row_index >= 1 && row_index < (input$size+coeff) &&
         col_index >= 1 && col_index < (input$size+coeff)) {
@@ -219,7 +221,7 @@ server <- function(input, output, session) {
     }
     
     print(v$statuses)
-    print(v$matrice)
+    # print(v$matrice)
     # v$resultat <- (v$statuses == v$matrice)
   })
   
@@ -232,12 +234,12 @@ server <- function(input, output, session) {
     else {showNotification("Bravo !!!", duration = 10, type="message")}
   })
   
-  # Observer for the "reset" button
+  # Paramétrage de k'effet du bouton Reset
   observeEvent(input$reset, {
-    # Reset the statuses matrix
+    # On reset la matrice des status
     v$statuses <- matrix(0, nrow = input$size, ncol = input$size)
     
-    # JavaScript to reset the colors of the grid
+    # JavaScript pour reset les couleurs des cases aussi
     js_reset <- "
     $('.square-button').each(function() {
       $(this).css('background-color', 'white');
