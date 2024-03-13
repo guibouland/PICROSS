@@ -12,9 +12,9 @@ New : génère une nouvelle grille
 
 Reset : remet à zéro la grille en cours
 
-Size : permet de selectionner la taille de la grille
+Size : permet de sélectionner la taille de la grille
 
-Difficulty : permet de séelctionner la difficulté de la grille
+Difficulty : permet de sélectionner la difficulté de la grille
 
 Check : permet de vérifier sa réponse
 

@@ -1,8 +1,10 @@
-#'matrice_alea crée une matrice carrée aléatoire de taille n contenant des 0 et 1, avec une proportion p de 1.
+#' @title matrice_alea
+#'
+#' @description matrice_alea crée une matrice carrée aléatoire de taille n contenant des 0 et 1, avec une proportion p de 1.
 #'
 #' @param n un entier
 #' @param p un réel de [0,1]
-#' @author Mottier
+#' @author Bouland - Mottier
 #' @examples matrice_alea(5,0.6)
 #' @export
 matrice_alea <- function(n, p) {
@@ -13,11 +15,13 @@ matrice_alea <- function(n, p) {
   return(M)
 }
 
-#'compteur calcule le nombre de 1 successifs pour chaque ligne ou chaque colonne d'une matrice carrée comportant des 1 et des 0
+#' @title compteur
+#'
+#' @description compteur calcule le nombre de 1 successifs pour chaque ligne ou chaque colonne d'une matrice carrée comportant des 1 et des 0
 #'
 #' @param M une matrice carrée remplie de 0 et 1
 #' @param t un nombre prenant la valeur 1 pour compter par colonne
-#' @author Mottier
+#' @author Bouland - Mottier
 #' @examples compteur(matrix(c(0,0,1,1,1,1,0,1,1,1,0,1,1,0,0,0),nrow=4,ncol=4,byrow=TRUE),0)
 #' @export
 compteur <- function(M,t) {

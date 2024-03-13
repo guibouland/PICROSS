@@ -2,7 +2,7 @@
 % Please edit documentation in R/Matrices.R
 \name{compteur}
 \alias{compteur}
-\title{compteur calcule le nombre de 1 successifs pour chaque ligne ou chaque colonne d'une matrice carrée comportant des 1 et des 0}
+\title{compteur}
 \usage{
 compteur(M, t)
 }
@@ -18,5 +18,5 @@ compteur calcule le nombre de 1 successifs pour chaque ligne ou chaque colonne d
 compteur(matrix(c(0,0,1,1,1,1,0,1,1,1,0,1,1,0,0,0),nrow=4,ncol=4,byrow=TRUE),0)
 }
 \author{
-Mottier
+Bouland - Mottier
 }

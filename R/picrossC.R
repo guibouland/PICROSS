@@ -1,5 +1,3 @@
-library(shiny)
-library(shinyjs)
 
 ui <- fluidPage(
   # tags$head(tags$script(src = "message-handler.js")),
@@ -10,7 +8,9 @@ ui <- fluidPage(
              position:fixed;
              top: calc(30%);
              left: calc(50%);
-             width: 150
+             width: 320px;
+             font-size: 25px; /* Taille de police */
+             color: red; /* Couleur de police */
              }
              "
       )
@@ -89,36 +89,20 @@ server <- function(input, output, session) {
   
   v <- reactiveValues(p=NULL, matrice=NULL, indices_lignes=NULL, indices_col=NULL, statuses=NULL, resultat=NULL)
   
-  # Proportion de cases noires
+  # Construction des objets réactifs
   observeEvent({
     input$new
     input$size
     input$diff},{
+      # Proportion de cases noires
       v$p <- difficulte(input$diff)
-    })
-  
-  # Génération des matrices solution et réponse
-  observeEvent({
-    input$new
-    input$size
-    input$diff},{
+      # Matrice à découvrir
       v$matrice <- matrice_alea(input$size, v$p)
+      # Matrice des réponses
       v$statuses <- matrix(0, nrow = input$size, ncol = input$size)
-    })
-  
-  # Indices par lignes
-  observeEvent({
-    input$new
-    input$size
-    input$diff},{
+      # Indices par lignes
       v$indices_lignes <- compteur(v$matrice,0)
-    })
-  
-  # Indices par colonnes
-  observeEvent({
-    input$new
-    input$size
-    input$diff},{
+      # Indices par colonnes
       v$indices_col <- t(compteur(v$matrice,1))
     })
   
@@ -205,11 +189,7 @@ server <- function(input, output, session) {
     
     # On extrait les indices des id des boutons
     row_index <- input$status_changed$row - coeff
-    
     col_index <- input$status_changed$col - coeff
-    
-    print(c(row_index, col_index))
-    print(coeff)
     
     # On vérifie si les indices sont dans l'ensemble de la matrice de jeu
     if (!is.na(row_index) && !is.na(col_index) &&
@@ -219,27 +199,24 @@ server <- function(input, output, session) {
     } else {
       print("Index out of bounds or invalid")
     }
-    
-    print(v$statuses)
-    # print(v$matrice)
-    # v$resultat <- (v$statuses == v$matrice)
   })
   
   # Paramètrage de l'effet du bouton Check
   observeEvent(input$verif,{
+    # Comparaison de la matrice des réponses avec la matrice à découvrir
     res <- (replace(v$statuses, v$statuses==2, 0) == v$matrice)
-    print(prod(res))
+    # Affichage du message 
     if (prod(res)==0) {
-      showNotification("Looser !!!", duration = 10, type="error")}
-    else {showNotification("Bravo !!!", duration = 10, type="message")}
+      showNotification("Loser !!! Essaie encore !", duration = 5, type="error")}
+    else {showNotification("Bravo, c'est gagné !!!", duration = 5, type="message")}
   })
   
-  # Paramétrage de k'effet du bouton Reset
+  # Paramétrage de l'effet du bouton Reset
   observeEvent(input$reset, {
-    # On reset la matrice des status
+    # On réinitialise la matrice des statuts
     v$statuses <- matrix(0, nrow = input$size, ncol = input$size)
     
-    # JavaScript pour reset les couleurs des cases aussi
+    # JavaScript pour réinitialiser les couleurs des cases
     js_reset <- "
     $('.square-button').each(function() {
       $(this).css('background-color', 'white');
@@ -251,4 +228,14 @@ server <- function(input, output, session) {
   })
 }
 
-shinyApp(ui = ui, server = server)
+#' @title Picross
+#'
+#' @description picross lance une application de jeu Picross paramétrable
+#'
+#' @author Bouland - Mottier
+#' @import shiny
+#' @import shinyjs
+#' @export
+picross <- function() {
+  shinyApp(ui = ui, server = server)
+}

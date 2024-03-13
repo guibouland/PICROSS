@@ -7,8 +7,8 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Authors@R: c(
-    person("Guillaume", "BOULAND", , "guillaume.bouland@etu.umontpellier.fr", role = "ctb"),
-    person("Camille", "MOTTIER", , "camille.mottier@etu.umontpellier.fr", role = "ctb")
+    person("Guillaume", "BOULAND", role = c("aut","cre"), email = "guillaume.bouland@etu.umontpellier.fr"),
+    person("Camille", "MOTTIER", role = c("aut"), email = "camille.mottier@etu.umontpellier.fr")
   )
 RoxygenNote: 7.3.1
 Roxygen: list(mardown = TRUE)

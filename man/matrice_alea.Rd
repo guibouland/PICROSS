@@ -2,7 +2,7 @@
 % Please edit documentation in R/Matrices.R
 \name{matrice_alea}
 \alias{matrice_alea}
-\title{matrice_alea crée une matrice carrée aléatoire de taille n contenant des 0 et 1, avec une proportion p de 1.}
+\title{matrice_alea}
 \usage{
 matrice_alea(n, p)
 }
@@ -18,5 +18,5 @@ matrice_alea crée une matrice carrée aléatoire de taille n contenant des 0 et
 matrice_alea(5,0.6)
 }
 \author{
-Mottier
+Bouland - Mottier
 }

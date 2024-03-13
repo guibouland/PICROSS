@@ -2,21 +2,16 @@
 % Please edit documentation in R/Diff.R
 \name{difficulte}
 \alias{difficulte}
-\title{difficulte convertit le niveau de difficulté choisi par l'utilisateur en une proportion p de cases noires. 
-Easy -> 0.8
-Medium -> 0.7
-Hard -> 0.6}
+\title{difficulte}
 \usage{
 difficulte(s)
 }
 \arguments{
-\item{s}{: chaîne de caractères parmi "Easy", "Medium", "Hard"}
+\item{s}{chaîne de caractères parmi "Easy", "Medium", "Hard"}
 }
 \description{
-difficulte convertit le niveau de difficulté choisi par l'utilisateur en une proportion p de cases noires. 
-Easy -> 0.8
-Medium -> 0.7
-Hard -> 0.6
+difficulte convertit le niveau de difficulté choisi par l'utilisateur en une proportion p de cases noires : 70\% pour le mode "Easy", 
+55\% pour le mode "Medium" et 45\% pour le mode "Hard".
 }
 \examples{
 difficulte("Easy")
