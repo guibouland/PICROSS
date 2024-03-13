@@ -4,6 +4,10 @@ Création d'une application shiny simulant un jeu de Picross.
 
 La grille est paramétrable en fonction de la taille et de la difficulté souhaitée.
 
+## Utilisation 
+
+Installer le package et lancer la fonction picross().
+
 ## Interactivité de l'application
 
 Grille de boutons cliquables : case blanche (non répondu), case noire (cases cachant un élément à découvrir), cases cochées (cases ne contenant pas d'élément à découvrir)
