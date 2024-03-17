@@ -1,5 +1,6 @@
 
 ui <- fluidPage(
+   
   # tags$head(tags$script(src = "message-handler.js")),
   titlePanel("Picross"),
   tags$head(
@@ -12,7 +13,17 @@ ui <- fluidPage(
              font-size: 25px; /* Taille de police */
              color: red; /* Couleur de police */
              }
-             "
+            .square-button {
+              position: relative;
+            }
+
+            .red-x {
+              color: red;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+            }"
       )
     ),
     tags$script("
@@ -25,58 +36,70 @@ ui <- fluidPage(
   sidebarLayout(
     # SIDEBAR
     sidebarPanel(
-      tags$p(tags$b("Options")),
-      
-      # Bouton NEW
-      actionButton(
-        inputId = "new",
-        label = "New"),
+      width = 2,
+      tags$h3(tags$b("Options")),
       tags$br(),
+      div(style="text-align:center;",
+        # Bouton NEW
+        actionButton(
+          inputId = "new",
+          label = "Nouveau",
+          style="color: white; background-color: #4CAF50; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;"),
+        tags$br(),
+        
+        # Bouton RESET
+        actionButton(
+          inputId = "reset",
+          label = "Réinitialiser",
+          style = "color: white; background-color: #1f77b4; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;"),
+        tags$br(),
+        
+        # bouton VERIFICATION
+        actionButton(
+        inputId = "verif",
+        label = "Vérification",
+        style = "color: white; background-color: #ff7f0e; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;")),
       
-      # Bouton RESET
-      actionButton(
-        inputId = "reset",
-        label = "Reset"),
       tags$br(),
-      tags$br(),
-      
+
       # slider TAILLE
       sliderInput(
         inputId = "size",
-        label = "Size:",
+        label = "Taille :",
         min = 5, max = 15,
         value = 5, step = 1),
       tags$br(),
       
       # menu DIFFICULTE
       selectInput(inputId ="diff",
-                  label = "Difficulty:",
+                  label = "Difficulté :",
                   choices = c("Easy", "Medium", "Hard"),
-                  selected = "Easy"),
+                  selected = "Easy")
       
-      # bouton VERIFICATION
-      actionButton(
-        inputId = "verif",
-        label = "Check"
-      )
+      
     ),
     
     # JEU ET REGLES
     mainPanel(
+      width = 10,
       tabsetPanel(
         tabPanel("Game", 
                  fluidRow(
                    column(width = 12,
                           tags$style(type="text/css", ".btn-group { margin-bottom: 2px; }"),
                           tags$style(type="text/css", "#grid {border-collapse: separate; border-spacing: 2px;}"), # style pour délimiter les cellules
-                          uiOutput("grid"),
+                          div(style="display: flex; justify-content: center; align-items: center; height: 100%;", # Centrer la grille
+                            uiOutput("grid")
+                          ),
                           textOutput('message')
                    )
-                 )),
+                 )
+        ),
         tabPanel("Rules", 
                  tags$h1("Game rules"),
                  tags$br(),
-                 "Game rules description")
+                 "Game rules description"
+        )
       ),
     )
   )
@@ -147,31 +170,31 @@ server <- function(input, output, session) {
     
     # JavaScript pour changer les couleurs des boutons et les statuts quand on les clique
     js <- "
-      $('.square-button').click(function() {
-        var status = parseInt($(this).data('status'));
-  
-        // On extrait les lignes et les colonnes des id des boutons
-        var id = $(this).attr('id'); 
-        var indices = id.split('_'); // On coupe au _
-        var row = parseInt(indices[1]); // La ligne est le second élément des trois
-        var col = parseInt(indices[2]); // La colonne est le dernier
-        if (status === 0) {
-          $(this).css('background-color', 'black');
-          $(this).data('status', 1);
-          Shiny.setInputValue('status_changed', {row: row, col: col, status: 1}); // On envoie le nouveau statut au server
-        } else if (status === 1) {
-          $(this).html('<span style=\"color:red;\">X</span>');
-          $(this).css('background-color', 'white');
-          $(this).data('status', 2);
-          Shiny.setInputValue('status_changed', {row: row, col: col, status: 2}); // On envoie le nouveau statut au server
-        } else {
-          $(this).html('');
-          $(this).css('background-color', 'white');
-          $(this).data('status', 0);
-          Shiny.setInputValue('status_changed', {row: row, col: col, status: 0}); // On envoie le nouveau statut au server
-        }
-      });
-    "
+  $('.square-button').click(function() {
+    var status = parseInt($(this).data('status'));
+
+    // On extrait les lignes et les colonnes des id des boutons
+    var id = $(this).attr('id'); 
+    var indices = id.split('_'); // On coupe au _
+    var row = parseInt(indices[1]); // La ligne est le second élément des trois
+    var col = parseInt(indices[2]); // La colonne est le dernier
+    if (status === 0) {
+      $(this).css('background-color', 'black');
+      $(this).data('status', 1);
+      Shiny.setInputValue('status_changed', {row: row, col: col, status: 1}); // On envoie le nouveau statut au server
+    } else if (status === 1) {
+      $(this).html('<span class=\"red-x\">X</span>');
+      $(this).css('background-color', 'white');
+      $(this).data('status', 2);
+      Shiny.setInputValue('status_changed', {row: row, col: col, status: 2}); // On envoie le nouveau statut au server
+    } else {
+      $(this).html('');
+      $(this).css('background-color', 'white');
+      $(this).data('status', 0);
+      Shiny.setInputValue('status_changed', {row: row, col: col, status: 0}); // On envoie le nouveau statut au server
+    }
+  });
+"
     
     tagList(
       # On injecte le CSS dans l'application
