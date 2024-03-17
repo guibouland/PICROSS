@@ -23,7 +23,8 @@ ui <- fluidPage(
               top: 50%;
               left: 50%;
               transform: translate(-50%, -50%);
-            }"
+            }
+            "
       )
     ),
     tags$script("
@@ -36,15 +37,15 @@ ui <- fluidPage(
   sidebarLayout(
     # SIDEBAR
     sidebarPanel(
-      width = 2,
-      tags$h3(tags$b("Options")),
+      width = 3,
+      tags$h3(tags$b("Options :")),
       tags$br(),
       div(style="text-align:center;",
         # Bouton NEW
         actionButton(
           inputId = "new",
           label = "Nouveau",
-          style="color: white; background-color: #4CAF50; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;"),
+          style="color: white; background-color: #2ca02c; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;"),
         tags$br(),
         
         # Bouton RESET
@@ -73,7 +74,7 @@ ui <- fluidPage(
       # menu DIFFICULTE
       selectInput(inputId ="diff",
                   label = "Difficulté :",
-                  choices = c("Easy", "Medium", "Hard"),
+                  choices = c("Easy", "Medium", "Hard"), # Ne peut pas être changé en français sinon l'app ne s'ouvre plus
                   selected = "Easy")
       
       
@@ -81,9 +82,9 @@ ui <- fluidPage(
     
     # JEU ET REGLES
     mainPanel(
-      width = 10,
+      width = 9,
       tabsetPanel(
-        tabPanel("Game", 
+        tabPanel("Jeu", 
                  fluidRow(
                    column(width = 12,
                           tags$style(type="text/css", ".btn-group { margin-bottom: 2px; }"),
@@ -95,10 +96,58 @@ ui <- fluidPage(
                    )
                  )
         ),
-        tabPanel("Rules", 
-                 tags$h1("Game rules"),
-                 tags$br(),
-                 "Game rules description"
+        tabPanel("Règles", 
+                   tags$h1("Règles du Jeu"),
+                   tags$br(),
+                   tags$h3("Description du jeu"),
+                   tags$p("Le Picross est un jeu de réflexion qui consiste à découvrir une image cachée en remplissant des cases d'une grille. Chaque case est soit noire, soit blanche. Les indices situés à gauche de la grille indiquent le nombre de cases noires à remplir sur chaque ligne, et les indices situés en haut de la grille indiquent le nombre de cases noires à remplir sur chaque colonne."),
+                   tags$br(),
+                   tags$h3("Comment jouer ?"),
+                   tags$p("Vous pouvez cliquer sur une case pour la remplir en noir, et recliquer dessus pour faire apparaître une croix rouge, indiquant alors que la dite case ne doit pas être noircie. Un dernier permettra de revenir à la case blanche."),
+                   tags$br(),
+                   tags$h3("Options"),
+                   tags$p("Sur la gauche du jeu, vous trouverez différentes options telles que :"),
+                   tags$ul(
+                     tags$li(
+                       tags$b("Nouveau"), " : pour générer une nouvelle grille"
+                     ),
+                     tags$li(
+                       tags$b("Réinitialiser"), " : pour effacer la grille actuelle et recommencer"
+                     ),
+                     tags$li(
+                       tags$b("Vérification"), " : pour vérifier si la grille actuelle est correcte"
+                     ),
+                     tags$li(
+                       tags$b("Taille"), " : pour choisir la taille de la grille (allant de 5 à 15, avec pour valeur initiale 5)"
+                     ),
+                     tags$li(
+                       tags$b("Difficulté"), " : pour choisir la difficulté de la grille (Easy, Medium, Hard, avec par défaut l'option Easy)"
+                     )
+                   ),
+                   tags$br(),
+                   tags$p("Concernant l'option 'Vérification', si la grille est correcte, un message de félicitations apparaîtra. Sinon, un message d'erreur vous indiquera que votre réponse est fausse. De plus, cette option n'est pas faite pour le vérifications au milieu de la partie. Elle sert seulement à vérifier en fin de partie si vous vous êtes trompé ou non. Il est aussi important de mentionner que les cases avec des croix rouges comptent comme des cases blanches lors de la vérification."),
+                   tags$br(),
+                   tags$p("Il est à noter que la difficulté influe sur la proportion de cases noires dans la grille. Plus la difficulté est élevée, plus la proportion de cases noires est faible, avec pour proportions :"),
+                   tags$ul(
+                     tags$li(
+                       tags$b("Easy"), " : 70% de cases noires"
+                     ),
+                     tags$li(
+                       tags$b("Medium"), " : 55% de cases noires"
+                     ),
+                     tags$li(
+                       tags$b("Hard"), " : 45% de cases noires"
+                     )
+                   ),
+                   tags$br(),
+                   tags$h1("A propos de nous"),
+                   tags$p("Ce jeu a été réalisé dans le cadre du projet de Programmation R, un UE donné par ",
+                          tags$a(href = "https://github.com/jmm34", "Jean-Michel Marin"),
+                          ", en première année de Master Statistique et Science des Données, par :"),
+                   tags$ul(
+                     tags$li("Camille MOTTIER (", tags$a(href = "https://github.com/cmottier", "Github"), ", ", tags$a(href = "camille.mottier@etu.umontpellier.fr", "Mail"), ")"),
+                     tags$li("Guillaume BOULAND (", tags$a(href = "https://github.com/guibouland", "Github"), ", ", tags$a(href = "guillaume.bouland@etu.umontpellier.fr", "Mail"), ")")
+                   )
         )
       ),
     )
