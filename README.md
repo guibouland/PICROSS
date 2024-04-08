@@ -6,21 +6,27 @@ La grille est paramétrable en fonction de la taille et de la difficulté souhai
 
 ## Utilisation 
 
-Installer le package et lancer la fonction picross().
+Pour installer le package et lancer le jeu : 
+
+```{}
+install.packages("devtools")
+devtools::install_github("guibouland/PICROSS")
+Picross::picross()
+```
 
 ## Interactivité de l'application
 
 Grille de boutons cliquables : case blanche (non répondu), case noire (cases cachant un élément à découvrir), cases cochées (cases ne contenant pas d'élément à découvrir)
 
-New : génère une nouvelle grille
+Nouveau : génère une nouvelle grille
 
-Reset : remet à zéro la grille en cours
+Réinitialiser : remet à zéro la grille en cours
 
-Size : permet de sélectionner la taille de la grille
+Taille : permet de sélectionner la taille de la grille
 
-Difficulty : permet de sélectionner la difficulté de la grille
+Difficulté : permet de sélectionner la difficulté de la grille
 
-Check : permet de vérifier sa réponse
+Vérification : permet de vérifier sa réponse
 
 ## Auteurs
 

@@ -7,14 +7,14 @@
 difficulte(s)
 }
 \arguments{
-\item{s}{chaîne de caractères parmi "Easy", "Medium", "Hard"}
+\item{s}{chaîne de caractères parmi "Facile", "Moyen", "Difficile"}
 }
 \description{
-difficulte convertit le niveau de difficulté choisi par l'utilisateur en une proportion p de cases noires : 70\% pour le mode "Easy", 
-55\% pour le mode "Medium" et 45\% pour le mode "Hard".
+difficulte convertit le niveau de difficulté choisi par l'utilisateur en une proportion p de cases noires : 70\% pour le mode "Facile", 
+55\% pour le mode "Moyen" et 45\% pour le mode "Diificile".
 }
 \examples{
-difficulte("Easy")
+difficulte("Facile")
 }
 \author{
 Bouland - Mottier

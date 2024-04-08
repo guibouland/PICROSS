@@ -1,17 +1,17 @@
 #' @title difficulte
 #'
-#' @description difficulte convertit le niveau de difficulté choisi par l'utilisateur en une proportion p de cases noires : 70\% pour le mode "Easy", 
-#'55\% pour le mode "Medium" et 45\% pour le mode "Hard".  
+#' @description difficulte convertit le niveau de difficulté choisi par l'utilisateur en une proportion p de cases noires : 70\% pour le mode "Facile", 
+#'55\% pour le mode "Moyen" et 45\% pour le mode "Diificile".  
 #'
-#' @param s chaîne de caractères parmi "Easy", "Medium", "Hard"
+#' @param s chaîne de caractères parmi "Facile", "Moyen", "Difficile"
 #' @author Bouland - Mottier
 #' @examples 
-#' difficulte("Easy")
+#' difficulte("Facile")
 #' @export
 
 difficulte <- function(s) {
-  if (s=='Easy') {p <- 0.7}
-  if (s=='Medium') {p <- 0.55}
-  if (s=='Hard') {p <- 0.45}
+  if (s=='Facile') {p <- 0.7}
+  if (s=='Moyen') {p <- 0.55}
+  if (s=='Difficile') {p <- 0.45}
   return(p)
   }

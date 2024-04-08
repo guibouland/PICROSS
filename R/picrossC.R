@@ -74,8 +74,8 @@ ui <- fluidPage(
       # menu DIFFICULTE
       selectInput(inputId ="diff",
                   label = "Difficulté :",
-                  choices = c("Easy", "Medium", "Hard"), # Ne peut pas être changé en français sinon l'app ne s'ouvre plus
-                  selected = "Easy")
+                  choices = c("Facile", "Moyen", "Difficile"), # Ne peut pas être changé en français sinon l'app ne s'ouvre plus
+                  selected = "Facile")
       
       
     ),
@@ -121,7 +121,7 @@ ui <- fluidPage(
                        tags$b("Taille"), " : pour choisir la taille de la grille (allant de 5 à 15, avec pour valeur initiale 5)"
                      ),
                      tags$li(
-                       tags$b("Difficulté"), " : pour choisir la difficulté de la grille (Easy, Medium, Hard, avec par défaut l'option Easy)"
+                       tags$b("Difficulté"), " : pour choisir la difficulté de la grille (Facile, Moyen, Difficile, avec par défaut l'option Facile)"
                      )
                    ),
                    tags$br(),
@@ -130,18 +130,18 @@ ui <- fluidPage(
                    tags$p("Il est à noter que la difficulté influe sur la proportion de cases noires dans la grille. Plus la difficulté est élevée, plus la proportion de cases noires est faible, avec pour proportions :"),
                    tags$ul(
                      tags$li(
-                       tags$b("Easy"), " : 70% de cases noires"
+                       tags$b("Facile"), " : 70% de cases noires"
                      ),
                      tags$li(
-                       tags$b("Medium"), " : 55% de cases noires"
+                       tags$b("Moyen"), " : 55% de cases noires"
                      ),
                      tags$li(
-                       tags$b("Hard"), " : 45% de cases noires"
+                       tags$b("Difficile"), " : 45% de cases noires"
                      )
                    ),
                    tags$br(),
                    tags$h1("A propos de nous"),
-                   tags$p("Ce jeu a été réalisé dans le cadre du projet de Programmation R, un UE donné par ",
+                   tags$p("Ce jeu a été réalisé dans le cadre du projet de Programmation R, une UE donnée par ",
                           tags$a(href = "https://github.com/jmm34", "Jean-Michel Marin"),
                           ", en première année de Master Statistique et Science des Données, par :"),
                    tags$ul(
