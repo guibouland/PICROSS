@@ -10,13 +10,13 @@ Pour installer le package et lancer le jeu :
 
 ```{}
 install.packages("devtools")
-devtools::install_github("guibouland/PICROSS")
+devtools::install_github("guibouland/Picross")
 Picross::picross()
 ```
 
 ## Interactivité de l'application
 
-Grille de boutons cliquables : case blanche (non répondu), case noire (cases cachant un élément à découvrir), cases cochées (cases ne contenant pas d'élément à découvrir)
+Grille de boutons cliquables : case blanche (non répondue), case noire (case cachant un élément à découvrir), case cochée (case ne contenant pas d'élément à découvrir)
 
 Nouveau : génère une nouvelle grille
 
